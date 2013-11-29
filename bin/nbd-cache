@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use 5.014;
+
+use Getopt::Std;
+use App::NBDCache;
+
+our ($opt_s, $opt_p);
+getopts('p:s');
+
+my $proxy = App::NBDCache->proxy(\*STDIN, $opt_s // 'localhost', $opt_p || 10809);
+
+$proxy->run;
