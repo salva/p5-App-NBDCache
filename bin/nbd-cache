@@ -8,9 +8,13 @@ use 5.014;
 use Getopt::Std;
 use App::NBDCache;
 
-our ($opt_s, $opt_p);
-getopts('p:s');
+our ($opt_s, $opt_p, $opt_d);
+getopts('p:s:d:');
 
-my $proxy = App::NBDCache->proxy(\*STDIN, $opt_s // 'localhost', $opt_p || 10809);
+my $proxy = App::NBDCache->proxy(\*STDIN, \*STDOUT, $opt_s // 'localhost', $opt_p || 10809);
+
+if ($opt_d) {
+    chdir $opt_d or die "unable to change dir to '$opt_d'\n";
+}
 
 $proxy->run;
